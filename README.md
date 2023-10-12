@@ -25,5 +25,7 @@ VITE_DEFAULT_ENGINE_INFOS=`[
 VITE_GTM_CONTAINER_ID=GTM-DUMMY
 
 ```
+そして、先ほどと同じようにvoicevoxディレクトリ内で以下のコマンドを実行
+```
 npm run electron:serve
 ```
