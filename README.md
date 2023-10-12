@@ -23,5 +23,7 @@ VITE_DEFAULT_ENGINE_INFOS=`[
     }
 ]`
 VITE_GTM_CONTAINER_ID=GTM-DUMMY
+
 ```
 npm run electron:serve
+```
