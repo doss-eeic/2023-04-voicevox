@@ -44,6 +44,18 @@
               >
               <q-btn v-else outline @click="openQa">Q&Aを見る</q-btn>
             </template>
+	    <!-- ダイアログ テスト -->
+            <q-dialog v-model="showModal">
+              <q-card>
+                <q-card-section class="text-h6">
+                  新しいアップデートがあります！
+                </q-card-section>
+                <q-card-section>
+                  <q-btn color="primary" label="アップデートする" @click="closeModal" />
+                  <q-btn label="後で通知する" @click="closeModal" />
+                </q-card-section>
+              </q-card>
+            </q-dialog>
           </div>
         </div>
         <q-splitter
