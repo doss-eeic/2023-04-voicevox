@@ -44,7 +44,7 @@
               >
               <q-btn v-else outline @click="openQa">Q&Aを見る</q-btn>
             </template>
-	    <!-- ダイアログ テスト -->
+	          <!-- ダイアログ テスト -->
             <q-dialog v-model="showModal">
               <q-card>
                 <q-card-section class="text-h6">
@@ -856,6 +856,12 @@ watch(activeAudioKey, (audioKey) => {
 const showAddAudioItemButton = computed(() => {
   return store.state.showAddAudioItemButton;
 });
+
+const showModal = ref(true);
+
+function closeModal() {
+  showModal.value = false;
+}
 </script>
 
 <style scoped lang="scss">
