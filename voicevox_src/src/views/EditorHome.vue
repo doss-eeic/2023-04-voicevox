@@ -45,13 +45,18 @@
               <q-btn v-else outline @click="openQa">Q&Aを見る</q-btn>
             </template>
 	          <!-- ダイアログ テスト -->
-            <q-dialog v-model="showModal">
+            <q-dialog v-model="showModal" v-if="props.isUpdateAvailable">
               <q-card>
                 <q-card-section class="text-h6">
                   新しいアップデートがあります！
                 </q-card-section>
                 <q-card-section>
-                  <q-btn color="primary" label="アップデートする" @click="closeModal" />
+                  <q-btn color="primary"
+                    to="https://voicevox.hiroshiba.jp"
+                    tag="a"
+                    target="_blank"
+                    label="アップデートする"
+                    @click="closeModal" />
                   <q-btn label="後で通知する" @click="closeModal" />
                 </q-card-section>
               </q-card>
@@ -227,10 +232,15 @@ import {
 } from "@/type/preload";
 import { isOnCommandOrCtrlKeyDown } from "@/store/utility";
 import { parseCombo, setHotkeyFunctions } from "@/store/setting";
+import { UpdateInfo } from "@/type/preload";
 
 const props =
   defineProps<{
     projectFilePath: string;
+    latestVersion: string;
+    downloadLink: string;
+    updateInfos: UpdateInfo[];
+    isUpdateAvailable: boolean;
   }>();
 
 const store = useStore();
