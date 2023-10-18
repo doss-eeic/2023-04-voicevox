@@ -7,6 +7,12 @@
     <q-page-container>
       <q-page class="main-row-panes">
         <progress-dialog />
+        <!-- アップデート可能ダイアログ -->
+        <!-- なぜかパスカルケースとケバブケースが対応しているみたい -->
+        <update-notification-dialog
+          v-if="isUpdateAvailable"
+          v-model="isUpdateNotificationDialogOpenComputed"
+        />
 
         <!-- TODO: 複数エンジン対応 -->
         <!-- TODO: allEngineStateが "ERROR" のときエラーになったエンジンを探してトーストで案内 -->
@@ -44,23 +50,6 @@
               >
               <q-btn v-else outline @click="openQa">Q&Aを見る</q-btn>
             </template>
-	          <!-- ダイアログ テスト -->
-            <q-dialog v-model="showModal" v-if="props.isUpdateAvailable">
-              <q-card>
-                <q-card-section class="text-h6">
-                  新しいアップデートがあります！
-                </q-card-section>
-                <q-card-section>
-                  <q-btn color="primary"
-                    to="https://voicevox.hiroshiba.jp"
-                    tag="a"
-                    target="_blank"
-                    label="アップデートする"
-                    @click="closeModal" />
-                  <q-btn label="後で通知する" @click="closeModal" />
-                </q-card-section>
-              </q-card>
-            </q-dialog>
           </div>
         </div>
         <q-splitter
@@ -232,15 +221,11 @@ import {
 } from "@/type/preload";
 import { isOnCommandOrCtrlKeyDown } from "@/store/utility";
 import { parseCombo, setHotkeyFunctions } from "@/store/setting";
-import { UpdateInfo } from "@/type/preload";
+import UpdateNotificationDialog from "@/components/UpdateNotificationDialog.vue";
 
 const props =
   defineProps<{
     projectFilePath: string;
-    latestVersion: string;
-    downloadLink: string;
-    updateInfos: UpdateInfo[];
-    isUpdateAvailable: boolean;
   }>();
 
 const store = useStore();
@@ -867,11 +852,15 @@ const showAddAudioItemButton = computed(() => {
   return store.state.showAddAudioItemButton;
 });
 
-const showModal = ref(true);
-
-function closeModal() {
-  showModal.value = false;
-}
+// アップデート可能ダイアログ
+const isUpdateAvailable = ref<boolean>(true);
+const isUpdateNotificationDialogOpenComputed = ref<boolean>(true);
+/* 他のis.*OpenComputedと同じように以下のようにしたい. type.tsとui.tsに追記する必要がある.
+= computed({
+  get: () => store.state.isUpdateNotificationDialogOpen,
+  set: (val) => store.dispatch("SET_DIALOG_OPEN", { isUpdateNotificationDialogOpen: val }),
+});
+*/
 </script>
 
 <style scoped lang="scss">
