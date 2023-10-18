@@ -8,8 +8,11 @@
       <q-page class="main-row-panes">
         <progress-dialog />
         <!-- アップデート可能ダイアログ -->
-        <!-- なぜかパスカルケースとケバブケースが対応しているみたい & コロンつけないとバグる -->
-        <update-notification-dialog downloadLink="https://voicevox.hiroshiba.jp/" :is-update-available="true"/>
+        <!-- なぜかパスカルケースとケバブケースが対応しているみたい -->
+        <update-notification-dialog
+          v-if="isUpdateAvailable"
+          v-model="isUpdateNotificationDialogOpenComputed"
+        />
 
         <!-- TODO: 複数エンジン対応 -->
         <!-- TODO: allEngineStateが "ERROR" のときエラーになったエンジンを探してトーストで案内 -->
@@ -218,7 +221,7 @@ import {
 } from "@/type/preload";
 import { isOnCommandOrCtrlKeyDown } from "@/store/utility";
 import { parseCombo, setHotkeyFunctions } from "@/store/setting";
-import UpdateNotificationDialog from "@/components/UpdateNotificationDialog.vue"
+import UpdateNotificationDialog from "@/components/UpdateNotificationDialog.vue";
 
 const props =
   defineProps<{
@@ -848,6 +851,16 @@ watch(activeAudioKey, (audioKey) => {
 const showAddAudioItemButton = computed(() => {
   return store.state.showAddAudioItemButton;
 });
+
+// アップデート可能ダイアログ
+const isUpdateAvailable = ref<boolean>(true);
+const isUpdateNotificationDialogOpenComputed = ref<boolean>(true);
+/* 他のis.*OpenComputedと同じように以下のようにしたい. type.tsとui.tsに追記する必要がある.
+= computed({
+  get: () => store.state.isUpdateNotificationDialogOpen,
+  set: (val) => store.dispatch("SET_DIALOG_OPEN", { isUpdateNotificationDialogOpen: val }),
+});
+*/
 </script>
 
 <style scoped lang="scss">
