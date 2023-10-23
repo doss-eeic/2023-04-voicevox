@@ -213,7 +213,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ComputedRef, ref } from "vue";
 import { useStore } from "@/store";
 import { parseCombo } from "@/store/setting";
 import { HotkeyAction, HotkeySetting } from "@/type/preload";
@@ -361,7 +361,17 @@ const resetHotkey = async (action: string) => {
       .getDefaultHotkeySettings()
       .then((defaultSettings: HotkeySetting[]) => {
         const setting = defaultSettings.find((value) => value.action == action);
-        if (setting) {
+        // デフォルトが未設定でない場合は、衝突チェックを行う
+        if (setting.combination != "") {
+          const duplicated = hotkeySettings.value.find((item) =>
+              item.combination == setting.combination && item.action != action);
+          if (duplicated != undefined) {
+            openHotkeyDialog(action);
+            lastRecord.value = duplicated.combination;
+          } else {
+            changeHotkeySettings(action, setting.combination);
+          }
+        } else {
           changeHotkeySettings(action, setting.combination);
         }
       });
