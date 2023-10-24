@@ -45,5 +45,5 @@ export const useFetchLatestVersion = () => {
         });
     });
 
-  return { isCheckingFinished, latestVersion };
+  return { isCheckingFinished, currentVersion, latestVersion };
 };
