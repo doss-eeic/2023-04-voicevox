@@ -53,8 +53,8 @@
     :model-value="showUpdateInfoDialog"
     @update:model-value="closeUpdateInfoDialog"
   >
-    <q-card class="q-py-none q-px-md" style="height: 40%">
-      <q-card-section>
+    <q-card class="q-py-none q-px-md">
+      <q-card-section class="q-py-sm q-px-md">
         <div class="scrollable-area">
           <h5>アップデート履歴</h5>
           <template v-for="(info, infoIndex) of updateInfos" :key="infoIndex">
@@ -72,17 +72,19 @@
           </template>
         </div>
       </q-card-section>
-      <div class="button-area">
-        <q-btn
-          padding="xs md"
-          label="閉じる"
-          unelevated
-          color="surface"
-          text-color="display"
-          class="q-mt-sm"
-          @click="closeUpdateInfoDialog()"
-        />
-      </div>
+      <q-card-section class="q-py-none q-px-md">
+        <q-card-actions align="center" class="button-area">
+          <q-btn
+            padding="xs md"
+            label="閉じる"
+            unelevated
+            color="surface"
+            text-color="display"
+            class="q-my-xs"
+            @click="closeUpdateInfoDialog()"
+          />
+        </q-card-actions>
+      </q-card-section>
     </q-card>
   </q-dialog>
 </template>
@@ -131,6 +133,7 @@ const openOfficialWebsite = () => {
 
 .scrollable-area {
   overflow-y: auto;
+  height: 250px;
 }
 .scrollable-area h5 {
   margin: 10px 0;
@@ -139,14 +142,6 @@ const openOfficialWebsite = () => {
   margin: 15px 0;
 }
 .button-area {
-  position: sticky;
-  height: 50px; /* ボタン領域の高さを指定 */
-  background-color: colors.$background; /* ボタン領域の背景色を設定（必要に応じて調整） */
   border-top: 1px solid colors.$splitter; /* ボタン領域の上部に線を引く */
-  padding-bottom: 10px;
-  bottom: 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 </style>
