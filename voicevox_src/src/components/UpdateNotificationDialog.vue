@@ -53,22 +53,26 @@
     :model-value="showUpdateInfoDialog"
     @update:model-value="closeUpdateInfoDialog"
   >
-    <q-card class="q-py-sm q-px-md">
-      <h5>アップデート履歴</h5>
-      <template v-for="(info, infoIndex) of updateInfos" :key="infoIndex">
-        <div v-if="semver.lt(DEBUGcurrentVersion, info.version)">
-          <h6>バージョン {{ info.version }}</h6>
-          <ul>
-            <template
-              v-for="(item, descriptionIndex) of info.descriptions"
-              :key="descriptionIndex"
-            >
-              <li>{{ item }}</li>
-            </template>
-          </ul>
+    <q-card class="q-py-none q-px-md" style="height: 40%">
+      <q-card-section>
+        <div class="scrollable-area">
+          <h5>アップデート履歴</h5>
+          <template v-for="(info, infoIndex) of updateInfos" :key="infoIndex">
+            <div v-if="semver.lt(DEBUGcurrentVersion, info.version)">
+              <h6>バージョン {{ info.version }}</h6>
+              <ul>
+                <template
+                  v-for="(item, descriptionIndex) of info.descriptions"
+                  :key="descriptionIndex"
+                >
+                  <li>{{ item }}</li>
+                </template>
+              </ul>
+            </div>
+          </template>
         </div>
-      </template>
-      <q-card-actions align="center">
+      </q-card-section>
+      <div class="button-area">
         <q-btn
           padding="xs md"
           label="閉じる"
@@ -78,7 +82,7 @@
           class="q-mt-sm"
           @click="closeUpdateInfoDialog()"
         />
-      </q-card-actions>
+      </div>
     </q-card>
   </q-dialog>
 </template>
@@ -121,3 +125,28 @@ const openOfficialWebsite = () => {
   window.open("https://voicevox.hiroshiba.jp/", "_blank");
 };
 </script>
+
+<style scoped lang="scss">
+@use '@/styles/colors' as colors;
+
+.scrollable-area {
+  overflow-y: auto;
+}
+.scrollable-area h5 {
+  margin: 10px 0;
+}
+.scrollable-area h6 {
+  margin: 15px 0;
+}
+.button-area {
+  position: sticky;
+  height: 50px; /* ボタン領域の高さを指定 */
+  background-color: colors.$background; /* ボタン領域の背景色を設定（必要に応じて調整） */
+  border-top: 1px solid colors.$splitter; /* ボタン領域の上部に線を引く */
+  padding-bottom: 10px;
+  bottom: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
