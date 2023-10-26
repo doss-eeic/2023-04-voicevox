@@ -54,10 +54,14 @@
     @update:model-value="closeUpdateInfoDialog"
   >
     <q-card class="q-py-none q-px-md">
+      <!-- 最新バージョンまでのアップデート情報を表示 -->
       <q-card-section class="q-py-sm q-px-md">
         <div class="scrollable-area">
-          <h5>アップデート履歴</h5>
-          <template v-for="(info, infoIndex) of updateInfos" :key="infoIndex">
+          <h5>更新情報</h5>
+          <template
+            v-for="(info, infoIndex) of latestUpdateInfos"
+            :key="infoIndex"
+          >
             <div v-if="semver.lt(DEBUGcurrentVersion, info.version)">
               <h6>バージョン {{ info.version }}</h6>
               <ul>
@@ -92,14 +96,12 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import semver from "semver";
-import { UpdateInfo as UpdateInfoObject } from "@/type/preload";
-import { useStore } from "@/store";
-import { useFetchLatestVersion } from "@/composables/useFetchLatestVersion";
+import {
+  useFetchLatestVersion,
+  useFetchLatestUpdateInfos,
+} from "@/composables/useFetchLatestVersion";
 
-const store = useStore();
-
-const updateInfos = ref<UpdateInfoObject[]>();
-store.dispatch("GET_UPDATE_INFOS").then((obj) => (updateInfos.value = obj));
+const latestUpdateInfos = useFetchLatestUpdateInfos();
 
 const { isCheckingFinished, currentVersion, latestVersion } =
   useFetchLatestVersion();
@@ -119,6 +121,7 @@ const showUpdateInfoDialog = ref<boolean>(false);
 const openUpdateInfoDialog = () => {
   showUpdateInfoDialog.value = true;
 };
+
 const closeUpdateInfoDialog = () => {
   showUpdateInfoDialog.value = false;
 };
