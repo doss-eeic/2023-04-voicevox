@@ -96,18 +96,15 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import semver from "semver";
-import {
-  useFetchLatestVersion,
-  useFetchLatestUpdateInfos,
-} from "@/composables/useFetchLatestVersion";
+import { useFetchLatestUpdateInfos } from "@/composables/useFetchLatestVersion";
 
-const latestUpdateInfos = useFetchLatestUpdateInfos();
+// const latestUpdateInfos = useFetchLatestUpdateInfos();
 
-const { isCheckingFinished, currentVersion, latestVersion } =
-  useFetchLatestVersion();
+const { isCheckingFinished, currentVersion, newerVersion, latestUpdateInfos } =
+  useFetchLatestUpdateInfos();
 const DEBUGcurrentVersion = ref("0.13.0");
 const isUpdateAvailable = computed(() => {
-  return isCheckingFinished.value && latestVersion.value !== "";
+  return isCheckingFinished.value && newerVersion.value !== "";
 });
 
 const showDialog = ref<boolean>(true);

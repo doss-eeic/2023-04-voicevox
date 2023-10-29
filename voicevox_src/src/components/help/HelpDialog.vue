@@ -96,7 +96,7 @@ import QAndA from "./QAndA.vue";
 import ContactInfo from "./ContactInfo.vue";
 import { UpdateInfo as UpdateInfoObject } from "@/type/preload";
 import { useStore } from "@/store";
-import { useFetchLatestVersion } from "@/composables/useFetchLatestVersion";
+import { useFetchLatestUpdateInfos } from "@/composables/useFetchLatestVersion";
 
 type PageItem = {
   type: "item";
@@ -131,10 +131,11 @@ const store = useStore();
 const updateInfos = ref<UpdateInfoObject[]>();
 store.dispatch("GET_UPDATE_INFOS").then((obj) => (updateInfos.value = obj));
 
-const { isCheckingFinished, latestVersion } = useFetchLatestVersion();
+// const { isCheckingFinished, latestVersion } = useFetchLatestVersion();
+const { isCheckingFinished, newerVersion } = useFetchLatestUpdateInfos();
 
 const isUpdateAvailable = computed(() => {
-  return isCheckingFinished.value && latestVersion.value !== "";
+  return isCheckingFinished.value && newerVersion.value !== "";
 });
 
 // エディタのOSSライセンス取得
@@ -185,7 +186,7 @@ const pagedata = computed(() => {
         downloadLink: "https://voicevox.hiroshiba.jp/",
         updateInfos: updateInfos.value,
         isUpdateAvailable: isUpdateAvailable.value,
-        latestVersion: latestVersion.value,
+        latestVersion: newerVersion.value,
       },
     },
     {
